@@ -13,6 +13,7 @@ import (
 )
 
 var testQueries *Queries
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
 	// Load .env from project root regardless of test directory
@@ -31,12 +32,14 @@ func TestMain(m *testing.M) {
 		dbUser, dbPassword, dbPort, dbName,
 	)
 
-	conn, err := sql.Open("postgres", dbSource)
+	var err error
+
+	testDB, err = sql.Open("postgres", dbSource)
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
 
-	testQueries = New(conn)
+	testQueries = New(testDB)
 
 	os.Exit(m.Run())
 }
