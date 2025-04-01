@@ -4,8 +4,6 @@ package db
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Account struct {
@@ -24,17 +22,6 @@ type Entry struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-type Session struct {
-	ID           uuid.UUID `json:"id"`
-	Username     string    `json:"username"`
-	RefreshToken string    `json:"refresh_token"`
-	UserAgent    string    `json:"user_agent"`
-	ClientIp     string    `json:"client_ip"`
-	IsBlocked    bool      `json:"is_blocked"`
-	ExpiresAt    time.Time `json:"expires_at"`
-	CreatedAt    time.Time `json:"created_at"`
-}
-
 type Transfer struct {
 	ID            int64 `json:"id"`
 	FromAccountID int64 `json:"from_account_id"`
@@ -42,25 +29,4 @@ type Transfer struct {
 	// must be positive
 	Amount    int64     `json:"amount"`
 	CreatedAt time.Time `json:"created_at"`
-}
-
-type User struct {
-	Username          string    `json:"username"`
-	Role              string    `json:"role"`
-	HashedPassword    string    `json:"hashed_password"`
-	FullName          string    `json:"full_name"`
-	Email             string    `json:"email"`
-	IsEmailVerified   bool      `json:"is_email_verified"`
-	PasswordChangedAt time.Time `json:"password_changed_at"`
-	CreatedAt         time.Time `json:"created_at"`
-}
-
-type VerifyEmail struct {
-	ID         int64     `json:"id"`
-	Username   string    `json:"username"`
-	Email      string    `json:"email"`
-	SecretCode string    `json:"secret_code"`
-	IsUsed     bool      `json:"is_used"`
-	CreatedAt  time.Time `json:"created_at"`
-	ExpiredAt  time.Time `json:"expired_at"`
 }
