@@ -23,6 +23,7 @@ CREATE TABLE "transfers" (
 
 -- INDEXES
 CREATE INDEX ON "accounts" ("owner");
+
 CREATE UNIQUE INDEX ON "accounts" ("owner", "currency");
 
 CREATE INDEX ON "entries" ("account_id");
@@ -37,5 +38,9 @@ COMMENT ON COLUMN "transfers"."amount" IS 'must be positive';
 
 -- FOREIGN KEYS (only among existing tables)
 ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
+
 ALTER TABLE "transfers" ADD FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id");
+
 ALTER TABLE "transfers" ADD FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id");
+
+
