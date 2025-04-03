@@ -1,5 +1,7 @@
+ifneq (,$(wildcard .env))
 include .env
 export $(shell sed 's/=.*//' .env)
+endif
 
 postgres:
 	docker run --name postgres12 -p $(POSTGRES_PORT):5432 \
@@ -25,6 +27,4 @@ sqlc:
 test:
 	go test -v -cover ./...
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc
-
-
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test
