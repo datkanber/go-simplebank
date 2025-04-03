@@ -34,16 +34,22 @@ jobs:
       POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
         go-version: ^1.15
 
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Install golang-migrate
+      run: |
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.2/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/
+        which migrate
+
     - name: Run migrations
       run: make migrateup
 
-    - name: Run tests
+    - name: Test
       run: make test
