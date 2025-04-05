@@ -10,9 +10,35 @@ import (
 	"github.com/techschool/simplebank/db/util"
 )
 
+// createRandomUser, test için kullanılacak random user oluşturur
+func createRandomUser(t *testing.T) User {
+	arg := CreateUserParams{
+		Username:       util.RandomOwner(),
+		HashedPassword: "secret",
+		FullName:       util.RandomOwner(),
+		Email:          util.RandomEmail(),
+	}
+
+	user, err := testQueries.CreateUser(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, user)
+
+	require.Equal(t, arg.Username, user.Username)
+	require.Equal(t, arg.HashedPassword, user.HashedPassword)
+	require.Equal(t, arg.FullName, user.FullName)
+	require.Equal(t, arg.Email, user.Email)
+
+	require.True(t, user.PasswordChangedAt.IsZero())
+	require.NotZero(t, user.CreatedAt)
+
+	return user
+}
+
 func createRandomAccount(t *testing.T) Account {
+	user := createRandomUser(t)
+
 	arg := CreateAccountParams{
-		Owner:    util.RandomOwner(),
+		Owner:    user.Username, // Kayıtlı bir kullanıcının adını kullan
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
